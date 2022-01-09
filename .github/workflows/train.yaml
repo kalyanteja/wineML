@@ -40,6 +40,9 @@ jobs:
         
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-south-1
+          role-to-assume: arn:aws:iam::158219437796:role/aws-elasticbeanstalk-service-role
 
       # Trains and published model metrics
       - name: train and log model
