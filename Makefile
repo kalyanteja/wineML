@@ -11,4 +11,5 @@ clean:
 	deactivate; \
 	rm -rf .requirements_installed
 
-train: python wine.py
+train:
+	python wine.py
