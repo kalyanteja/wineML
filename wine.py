@@ -16,6 +16,13 @@ import logging
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
 
+mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI", False)
+
+logger.log(f'mlflow_tracking_uri:::{mlflow_tracking_uri}')
+
+if mlflow_tracking_uri is not False:
+    mlflow.set_tracking_uri(mlflow_tracking_uri)
+
 
 def eval_metrics(actual, pred):
     rmse = np.sqrt(mean_squared_error(actual, pred))

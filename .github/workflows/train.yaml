@@ -37,6 +37,9 @@ jobs:
         run: |
           which pip
           make install
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
 
       # Trains and published model metrics
       - name: train and log model
