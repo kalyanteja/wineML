@@ -18,8 +18,6 @@ logger = logging.getLogger(__name__)
 
 mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI", False)
 
-print(f'mlflow_tracking_uri:::{mlflow_tracking_uri}')
-
 if mlflow_tracking_uri is not False:
     mlflow.set_tracking_uri(mlflow_tracking_uri)
 
