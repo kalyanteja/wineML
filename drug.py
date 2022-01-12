@@ -23,7 +23,6 @@ if mlflow_tracking_uri is not False:
     mlflow.set_tracking_uri(mlflow_tracking_uri)
 
 experiment_name = "male drugs"
-artifact_repository = './mlflow-run'
 
 # Initialize client
 client = MlflowClient()
@@ -32,7 +31,7 @@ client = MlflowClient()
 # else it will take the experiment id and will use to to run the experiments
 try:
     # Create experiment 
-    experiment_id = client.create_experiment(experiment_name, artifact_location=artifact_repository)
+    experiment_id = client.create_experiment(experiment_name)
 except:
     # Get the experiment id if it already exists
     experiment_id = client.get_experiment_by_name(experiment_name).experiment_id
