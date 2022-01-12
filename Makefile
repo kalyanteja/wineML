@@ -12,4 +12,4 @@ clean:
 	rm -rf .requirements_installed
 
 train:
-	python drug.py
+	python wine.py

@@ -8,6 +8,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import KFold, cross_val_score
 from urllib.parse import urlparse
+from mlflow.tracking import MlflowClient
 import mlflow
 import mlflow.sklearn
 
@@ -20,6 +21,21 @@ mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI", False)
 
 if mlflow_tracking_uri is not False:
     mlflow.set_tracking_uri(mlflow_tracking_uri)
+
+experiment_name = "male drugs"
+artifact_repository = './mlflow-run'
+
+# Initialize client
+client = MlflowClient()
+
+# If experiment doesn't exist then it will create new
+# else it will take the experiment id and will use to to run the experiments
+try:
+    # Create experiment 
+    experiment_id = client.create_experiment(experiment_name, artifact_location=artifact_repository)
+except:
+    # Get the experiment id if it already exists
+    experiment_id = client.get_experiment_by_name(experiment_name).experiment_id
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
@@ -41,7 +57,7 @@ for feature in categorical_features:
 X = df_drug.drop("Drug", axis=1)
 y = df_drug["Drug"]
 
-with mlflow.start_run():
+with mlflow.start_run(experiment_id=experiment_id):
     model = DecisionTreeClassifier(criterion="entropy")
     model.fit(X, y)
 

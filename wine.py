@@ -8,6 +8,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import ElasticNet
 from urllib.parse import urlparse
+from mlflow.tracking import MlflowClient
 import mlflow
 import mlflow.sklearn
 
@@ -21,6 +22,21 @@ mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI", False)
 if mlflow_tracking_uri is not False:
     mlflow.set_tracking_uri(mlflow_tracking_uri)
 
+experiment_name = "red wines"
+artifact_repository = './mlflow-run'
+
+# Initialize client
+client = MlflowClient()
+
+# If experiment doesn't exist then it will create new
+# else it will take the experiment id and will use to to run the experiments
+try:
+    # Create experiment 
+    experiment_id = client.create_experiment(experiment_name, artifact_location=artifact_repository)
+except:
+    # Get the experiment id if it already exists
+    experiment_id = client.get_experiment_by_name(experiment_name).experiment_id
+    
 
 def eval_metrics(actual, pred):
     rmse = np.sqrt(mean_squared_error(actual, pred))
@@ -56,7 +72,7 @@ if __name__ == "__main__":
     alpha = float(sys.argv[1]) if len(sys.argv) > 1 else 0.4
     l1_ratio = float(sys.argv[2]) if len(sys.argv) > 2 else 0.6
 
-    with mlflow.start_run():
+    with mlflow.start_run(experiment_id=experiment_id):
         lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
         lr.fit(train_x, train_y)
 
