@@ -22,7 +22,7 @@ mlflow_tracking_uri = os.getenv("MLFLOW_TRACKING_URI", False)
 if mlflow_tracking_uri is not False:
     mlflow.set_tracking_uri(mlflow_tracking_uri)
 
-experiment_name = "blanc"
+experiment_name = "red vino"
 
 # Initialize client
 client = MlflowClient()
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     train_y = train[["quality"]]
     test_y = test[["quality"]]
 
-    alpha = float(sys.argv[1]) if len(sys.argv) > 1 else 0.4
+    alpha = float(sys.argv[1]) if len(sys.argv) > 1 else 0.8
     l1_ratio = float(sys.argv[2]) if len(sys.argv) > 2 else 0.6
 
     with mlflow.start_run(experiment_id=experiment_id):
